@@ -8,7 +8,7 @@ Step 1: Leverage LLMs to convert natural language into an SQL query
 Step 2: Execute the generated query against the database to fetch  and display results 
 
 ### Implementation
-###### Step 1
+#### Step 1
 Since the Gemini API supports a large free tier, I used Gemini to parse user input and generate an SQL query. I also used the following system prompt to specify the database schema and set the context for the conversation. I also maintained chat history to allow users to follow up on previous messages and make the exchange between the user and assistant more conversational. 
 
 I have an sqlite database with the following table and columns:
@@ -66,7 +66,7 @@ Columns:
 I will need you to help me generate SQL queries to get data from my database.
 Please respond only with the query. Do not provide any explanations or additional text.
 
-###### Step 2
+#### Step 2
 I parsed Gemini’s response to extract the SQL query generated and also built guardrails to preserve the authenticity of the data. Specifically, if the extracted query involved any SQL statements for database modification, namely, DROP, ALTER, TRUNCATE, DELETE, INSERT or UPDATE,  I terminated program execution and displayed a message to the user stating that their request could not be met. 
 
 For all other queries, I fetched results from the database and displayed them as Pandas dataframes in the chat interface designed using Streamlit. To make the engine more robust, I implemented exception handling, that is, if the Gemini-generated SQL query contained errors, the engine would make two attempts to fix the error before responding to the user. 
